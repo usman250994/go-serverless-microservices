@@ -32,21 +32,29 @@ func (h *Handler) update(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	//gets userId from cognito auth headers
+	var userId string
+	// if id := r.Header.Get("X-Amzn-Trace-Id"); id != "" {
+	// 	userId = id
+	// }
+
+	// get id from query param
+	userId = r.URL.Query().Get("id")
+
 	user := profile{
-		//get id from req auth headers
-		Id:       req.Id,
+		Id:       userId,
 		Name:     req.Name,
 		Email:    req.Email,
 		UserType: req.UserType,
 		Rating:   req.Ratings,
 	}
 
-	user, err := h.service.updateProfile(r.Context(), user)
+	resp, err := h.service.updateProfile(r.Context(), user)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
 	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(user)
+	json.NewEncoder(w).Encode(resp)
 }

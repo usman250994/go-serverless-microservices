@@ -11,6 +11,8 @@ require (
 	github.com/go-playground/validator/v10 v10.27.0
 )
 
+require github.com/joho/godotenv v1.5.1 // indirect
+
 require (
 	github.com/aws/aws-sdk-go-v2 v1.38.3 // indirect
 	github.com/aws/aws-sdk-go-v2/credentials v1.18.10 // indirect

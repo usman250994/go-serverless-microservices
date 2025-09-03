@@ -10,11 +10,12 @@ func NewService(repo Repository) *Service {
 	return &Service{repo: repo}
 }
 
-func (s *Service) updateProfile(ctx context.Context, r profile) (string, error) {
+func (s *Service) updateProfile(ctx context.Context, p profile) (string, error) {
 
-	if err := s.repo.Save(ctx, &user); err != nil {
+	res, err := s.repo.Save(ctx, &p)
+	if err != nil {
 		return "", err
 	}
 
-	return "success", nil
+	return res, nil
 }
