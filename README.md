@@ -1,3 +1,5 @@
+![Work in Progress](https://img.shields.io/badge/Status-Work_in_Progress-orange?style=for-the-badge&logo=github)
+
 # 🏗️ Go Serverless Microservices
 
 [![Go Version](https://img.shields.io/badge/Go-1.22+-blue.svg)](https://go.dev)
@@ -49,9 +51,11 @@ internal/
 ## 🛠️ Tech Stack
 
 - **Language**: Go (Golang)
+- **Cloud**: AWS (Cognito, Api gateway and lambdas )
 - **Architecture**: Clean Architecture + DDD
-- **Routing**: gorilla-mux
+- **Routing**: chi
 - **Persistence**: Extendable (DynamoDB)
+- **Validation**:  go-playground/validator
 
 ---
 
@@ -68,7 +72,7 @@ internal/
 
 ```sh
 # Clone repo
-$ git clone https://github.com/yourusername/go-microservice-starter.git
+$ git clone https://github.com/usman250994/go-serverless-microservices.git
 
 # Run users service
 $ cd cmd/users
