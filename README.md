@@ -34,6 +34,8 @@ internal/
 	├── handler.go     # HTTP handlers
 	├── service.go     # Business logic
 	└── model.go       # Domain models/entities
+	└── repo.go       # crud operations for db
+ 	└── type.go       # request response types for validation
 ```
 
 ---
@@ -43,19 +45,22 @@ internal/
 - **main.go**: Starts the service & initializes dependencies
 - **routes.go**: Registers endpoints & maps to handlers
 - **handler.go**: Processes requests, calls services
+- **type.go**:  Contains requests' DTOs, for validation
 - **service.go**: Contains business logic & workflows
 - **model.go**: Defines domain entities & data structures
+- **repo.go**: Defines db crud operations using Dynamo
 
 ---
 
 ## 🛠️ Tech Stack
 
 - **Language**: Go (Golang)
-- **Cloud**: AWS (Cognito, Api gateway and lambdas )
+- **Cloud**: AWS (tested with Cognito, Api gateway and lambdas)
 - **Architecture**: Clean Architecture + DDD
 - **Routing**: chi
 - **Persistence**: Extendable (DynamoDB)
 - **Validation**:  go-playground/validator
+- **Authentication**:  using jwt for extracting userId
 
 ---
 
@@ -80,6 +85,15 @@ $ go run main.go
 ```
 
 ---
+
+## 🚧 Upcoming Features
+
+- 🗄️ **Database Abstraction**: Internal package for DynamoDB access—cleaner, decoupled repo logic.
+- 📡 **Event Streaming**: Integrate AWS SNS, SQS, and DynamoDB Streams for real-time event sourcing.
+- 🔍 **Query Wrapper**: Generic query builder to simplify and standardize DynamoDB queries.
+
+---
+
 
 ## 🤝 Contributing
 
