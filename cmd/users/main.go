@@ -8,11 +8,11 @@ import (
 
 	"github.com/aws/aws-lambda-go/lambda"
 	"github.com/aws/aws-sdk-go-v2/config"
-	"github.com/aws/aws-sdk-go-v2/service/dynamodb"
 	chiadapter "github.com/awslabs/aws-lambda-go-api-proxy/chi"
 	"github.com/go-chi/chi/middleware"
 	"github.com/go-chi/chi/v5"
 	"github.com/joho/godotenv"
+	dydb "github.com/usman250994/cloudyGo/internal/db"
 	user "github.com/usman250994/cloudyGo/internal/users"
 )
 
@@ -34,7 +34,7 @@ func main() {
 	}
 
 	// 2️⃣ Initialize DynamoDB client
-	dynamoClient := dynamodb.NewFromConfig(cfg)
+	dynamoClient := dydb.NewClient(cfg)
 
 	// 3️⃣ Create repository (table name from env)
 	tableName := os.Getenv("USERS_TABLE")
