@@ -58,6 +58,26 @@ func (h *Handler) update(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(resp)
 }
 
+func (h *Handler) get(w http.ResponseWriter, r *http.Request) {
+
+	authHeader := r.Header.Get("Authorization")
+
+	userId, err := parseUserIDFromAuthHeader(authHeader)
+	if err != nil {
+		http.Error(w, "unauthorized: "+err.Error(), http.StatusUnauthorized)
+		return
+	}
+
+	resp, err := h.service.getProfile(r.Context(), userId)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(resp)
+}
+
 func parseUserIDFromAuthHeader(authHeader string) (string, error) {
 	if authHeader == "" {
 		return "", fmt.Errorf("missing Authorization header")

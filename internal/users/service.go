@@ -20,3 +20,11 @@ func (s *Service) updateProfile(ctx context.Context, p profile) (string, error) 
 
 	return res, nil
 }
+
+func (s *Service) getProfile(ctx context.Context, userId string) (*profile, error) {
+	profile, err := s.repo.FindById(ctx, userId)
+	if err != nil {
+		return nil, err
+	}
+	return profile, nil
+}

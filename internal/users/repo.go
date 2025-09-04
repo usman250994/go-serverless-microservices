@@ -5,12 +5,14 @@ import (
 	"fmt"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/feature/dynamodb/attributevalue"
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb"
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb/types"
 )
 
 type Repository interface {
 	Save(ctx context.Context, user *profile) (string, error)
+	FindById(ctx context.Context, userId string) (*profile, error)
 }
 
 type DynamoRepository struct {
@@ -28,7 +30,7 @@ func (r *DynamoRepository) Save(ctx context.Context, user *profile) (string, err
 		"name":     &types.AttributeValueMemberS{Value: user.Name},
 		"email":    &types.AttributeValueMemberS{Value: user.Email},
 		"userType": &types.AttributeValueMemberS{Value: string(user.UserType)},
-		"rating":   &types.AttributeValueMemberS{Value: fmt.Sprintf("%f", user.Rating)},
+		"rating":   &types.AttributeValueMemberN{Value: fmt.Sprintf("%f", user.Rating)},
 	}
 
 	_, err := r.client.PutItem(ctx, &dynamodb.PutItemInput{
@@ -40,4 +42,23 @@ func (r *DynamoRepository) Save(ctx context.Context, user *profile) (string, err
 	}
 
 	return "success", nil
+}
+
+func (r *DynamoRepository) FindById(ctx context.Context, userId string) (*profile, error) {
+	result, err := r.client.GetItem(ctx, &dynamodb.GetItemInput{
+		TableName: aws.String(r.tableName),
+		Key: map[string]types.AttributeValue{
+			"Id": &types.AttributeValueMemberS{Value: userId},
+		},
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var user profile
+	if err := attributevalue.UnmarshalMap(result.Item, &user); err != nil {
+		return nil, err
+	}
+
+	return &user, nil
 }
