@@ -24,7 +24,7 @@ func NewDynamoRepository(client *dynamodb.Client, tableName string) *DynamoRepos
 
 func (r *DynamoRepository) Save(ctx context.Context, user *profile) (string, error) {
 	item := map[string]types.AttributeValue{
-		"id":       &types.AttributeValueMemberS{Value: user.Id},
+		"Id":       &types.AttributeValueMemberS{Value: user.Id},
 		"name":     &types.AttributeValueMemberS{Value: user.Name},
 		"email":    &types.AttributeValueMemberS{Value: user.Email},
 		"userType": &types.AttributeValueMemberS{Value: string(user.UserType)},

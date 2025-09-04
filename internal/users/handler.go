@@ -2,13 +2,13 @@ package user
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
+	"strings"
 
 	"github.com/go-playground/validator/v10"
+	"github.com/golang-jwt/jwt/v4"
 )
-
-// how to test this go function locally via a postman?
-// how to apply validation on fields?
 
 type Handler struct {
 	service  *Service
@@ -32,14 +32,13 @@ func (h *Handler) update(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	//gets userId from cognito auth headers
-	var userId string
-	// if id := r.Header.Get("X-Amzn-Trace-Id"); id != "" {
-	// 	userId = id
-	// }
+	authHeader := r.Header.Get("Authorization")
 
-	// get id from query param
-	userId = r.URL.Query().Get("id")
+	userId, err := parseUserIDFromAuthHeader(authHeader)
+	if err != nil {
+		http.Error(w, "unauthorized: "+err.Error(), http.StatusUnauthorized)
+		return
+	}
 
 	user := profile{
 		Id:       userId,
@@ -57,4 +56,26 @@ func (h *Handler) update(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(resp)
+}
+
+func parseUserIDFromAuthHeader(authHeader string) (string, error) {
+	if authHeader == "" {
+		return "", fmt.Errorf("missing Authorization header")
+	}
+	parts := strings.Split(authHeader, " ")
+	if len(parts) != 2 || parts[0] != "Bearer" {
+		return "", fmt.Errorf("invalid Authorization header format")
+	}
+
+	tokenStr := parts[1]
+	token, _, err := new(jwt.Parser).ParseUnverified(tokenStr, jwt.MapClaims{})
+	if err != nil {
+		return "", fmt.Errorf("invalid token")
+	}
+	claims := token.Claims.(jwt.MapClaims)
+	userId, ok := claims["sub"].(string)
+	if !ok || userId == "" {
+		return "", fmt.Errorf("user ID not found in token")
+	}
+	return userId, nil
 }

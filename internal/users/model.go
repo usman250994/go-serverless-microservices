@@ -3,8 +3,8 @@ package user
 type userType string
 
 const (
-	userTypeAdmin   userType = "admin"
-	userTypeRegular userType = "regular"
+	userTypeAdmin   userType = "rentee"
+	userTypeRegular userType = "renter"
 )
 
 type profile struct {

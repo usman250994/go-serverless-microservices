@@ -1,6 +1,8 @@
 package user
 
-import "context"
+import (
+	"context"
+)
 
 type Service struct {
 	repo Repository
@@ -11,7 +13,6 @@ func NewService(repo Repository) *Service {
 }
 
 func (s *Service) updateProfile(ctx context.Context, p profile) (string, error) {
-
 	res, err := s.repo.Save(ctx, &p)
 	if err != nil {
 		return "", err
