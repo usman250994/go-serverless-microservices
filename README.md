@@ -1,11 +1,11 @@
-![Work in Progress](https://img.shields.io/badge/Status-Work_in_Progress-orange?style=for-the-badge&logo=github)
-
 # 🏗️ Go Serverless Microservices
+
+![Work in Progress](https://img.shields.io/badge/Status-Work_in_Progress-orange?style=for-the-badge&logo=github)
 
 [![Go Version](https://img.shields.io/badge/Go-1.22+-blue.svg)](https://go.dev)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](./LICENSE)
-[![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg)]()
-[![Architecture](https://img.shields.io/badge/Clean%20Architecture-DDD-orange.svg)]()
+[![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg)](https://github.com/usman250994/go-serverless-microservices/actions)
+![Architecture](https://img.shields.io/badge/Clean%20Architecture-DDD-orange.svg)
 
 > **Scalable, maintainable, and production-ready microservices in Go, powered by Clean Architecture & DDD.**
 
@@ -27,15 +27,15 @@
 ```text
 cmd/
  └── users/
-	└── main.go        # Entry point for Users microservice
+   └── main.go        # Entry point for Users microservice
 internal/
  └── users/
-	├── routes.go      # Routes & handler mapping
-	├── handler.go     # HTTP handlers
-	├── service.go     # Business logic
-	└── model.go       # Domain models/entities
-	└── repo.go       # crud operations for db
- 	└── type.go       # request response types for validation
+   ├── routes.go      # Routes & handler mapping
+   ├── handler.go     # HTTP handlers
+   ├── service.go     # Business logic
+   └── model.go       # Domain models/entities
+   └── repo.go        # crud operations for db
+   └── type.go        # request response types for validation
 ```
 
 ---
@@ -94,7 +94,6 @@ $ go run main.go
 
 ---
 
-
 ## 🤝 Contributing
 
 Contributions are welcome! Open issues or PRs to improve structure or add features.
@@ -105,5 +104,6 @@ Contributions are welcome! Open issues or PRs to improve structure or add featur
 
 MIT License – use this boilerplate for your own projects.
 
-##  Medium arcticle
+## Medium arcticle
+
   [go serverless microservices boiler plate](https://medium.com/@mani9418/go-serverless-microservices-a-clean-architecture-boilerplate-for-go-developers-474fc1c9c792)
