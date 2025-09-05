@@ -12,7 +12,7 @@ import (
 	"github.com/go-chi/chi/middleware"
 	"github.com/go-chi/chi/v5"
 	"github.com/joho/godotenv"
-	dydb "github.com/usman250994/cloudyGo/internal/db"
+	dydb "github.com/usman250994/cloudyGo/internal/db/dynamo"
 	user "github.com/usman250994/cloudyGo/internal/users"
 )
 
