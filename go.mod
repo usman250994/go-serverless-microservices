@@ -11,7 +11,11 @@ require (
 	github.com/go-playground/validator/v10 v10.27.0
 )
 
-require github.com/joho/godotenv v1.5.1
+require (
+	github.com/joho/godotenv v1.5.1
+	github.com/opensearch-project/opensearch-go/v2 v2.3.0
+	github.com/opensearch-project/opensearch-go/v4 v4.5.0
+)
 
 require github.com/aws/aws-sdk-go-v2/service/dynamodbstreams v1.30.2 // indirect
 
