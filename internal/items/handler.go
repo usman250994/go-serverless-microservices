@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 	"strings"
+	"time"
 
 	"github.com/go-playground/validator/v10"
 	"github.com/golang-jwt/jwt/v4"
@@ -21,7 +22,7 @@ func NewHandler(service *Service) *Handler {
 
 func (h *Handler) add(w http.ResponseWriter, r *http.Request) {
 
-	var req updateProfileReq
+	var req addProductReq
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		http.Error(w, "invalid request body", http.StatusBadRequest)
 		return
@@ -40,15 +41,16 @@ func (h *Handler) add(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	user := profile{
-		Id:       userId,
-		Name:     req.Name,
-		Email:    req.Email,
-		UserType: req.UserType,
-		Rating:   req.Ratings,
+	prod := product{
+		Id:      generateUniqueID(),
+		UserId:  userId,
+		Name:    req.Name,
+		Details: req.Details,
+		Lat:     req.Lat,
+		Lng:     req.Lng,
 	}
 
-	resp, err := h.service.updateProfile(r.Context(), user)
+	resp, err := h.service.addProduct(r.Context(), prod)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -59,16 +61,19 @@ func (h *Handler) add(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *Handler) get(w http.ResponseWriter, r *http.Request) {
-
-	authHeader := r.Header.Get("Authorization")
-
-	userId, err := parseUserIDFromAuthHeader(authHeader)
-	if err != nil {
-		http.Error(w, "unauthorized: "+err.Error(), http.StatusUnauthorized)
-		return
+	// Parse query params into ProductQuery
+	var q ProductQuery
+	q.Name = r.URL.Query().Get("name")
+	q.Details = r.URL.Query().Get("details")
+	// Parse lat/lng as float64
+	if lat := r.URL.Query().Get("lat"); lat != "" {
+		fmt.Sscanf(lat, "%f", &q.Lat)
+	}
+	if lng := r.URL.Query().Get("lng"); lng != "" {
+		fmt.Sscanf(lng, "%f", &q.Lng)
 	}
 
-	resp, err := h.service.getProfile(r.Context(), userId)
+	resp, err := h.service.getNearestProducts(r.Context(), &q)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -98,4 +103,15 @@ func parseUserIDFromAuthHeader(authHeader string) (string, error) {
 		return "", fmt.Errorf("user ID not found in token")
 	}
 	return userId, nil
+}
+
+// generateUniqueID generates a unique ID for a product.
+func generateUniqueID() string {
+	return fmt.Sprintf("%d", generateRandomInt64())
+}
+
+// generateRandomInt64 generates a random int64 value.
+func generateRandomInt64() int64 {
+	// You can use crypto/rand for better randomness in production.
+	return int64(time.Now().UnixNano())
 }

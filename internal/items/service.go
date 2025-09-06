@@ -5,26 +5,26 @@ import (
 )
 
 type Service struct {
-	repo *Repository
+	repo Repository
 }
 
 func NewService(repo Repository) *Service {
-	return &Service{repo: &repo}
+	return &Service{repo: repo}
 }
 
-func (s *Service) updateProfile(ctx context.Context, p profile) (string, error) {
-	res, err := s.repo.Save(ctx, &p)
+func (s *Service) addProduct(ctx context.Context, p product) (string, error) {
+	_, err := s.repo.Save(ctx, &p)
 	if err != nil {
 		return "", err
 	}
 
-	return res, nil
+	return "success", nil
 }
 
-func (s *Service) getProfile(ctx context.Context, userId string) (*profile, error) {
-	profile, err := s.repo.FindById(ctx, userId)
+func (s *Service) getNearestProducts(ctx context.Context, q *ProductQuery) ([]product, error) {
+	prd, err := s.repo.getNearestTen(ctx, q)
 	if err != nil {
 		return nil, err
 	}
-	return profile, nil
+	return prd, nil
 }

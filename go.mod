@@ -14,10 +14,12 @@ require (
 require (
 	github.com/joho/godotenv v1.5.1
 	github.com/opensearch-project/opensearch-go/v2 v2.3.0
-	github.com/opensearch-project/opensearch-go/v4 v4.5.0
 )
 
-require github.com/aws/aws-sdk-go-v2/service/dynamodbstreams v1.30.2 // indirect
+require (
+	github.com/aws/aws-sdk-go-v2/service/dynamodbstreams v1.30.2 // indirect
+	github.com/stretchr/testify v1.10.0 // indirect
+)
 
 require (
 	github.com/aws/aws-sdk-go-v2 v1.38.3
